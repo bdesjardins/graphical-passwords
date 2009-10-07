@@ -35,6 +35,12 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
+
+  map.connect '', :controller => 'login'
+  map.connect 'server/xrds', :controller => 'server', :action => 'idp_xrds'
+  map.connect 'user/:username', :controller => 'server', :action => 'user_page'
+  map.connect 'user/:username/xrds', :controller => 'server', :action => 'user_xrds'
+  
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
@@ -42,11 +48,6 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id.:format'
   
   
-
-  map.connect '', :controller => 'login'
-  map.connect 'server/xrds', :controller => 'server', :action => 'idp_xrds'
-  map.connect 'user/:username', :controller => 'server', :action => 'user_page'
-  map.connect 'user/:username/xrds', :controller => 'server', :action => 'user_xrds'
   
   
 end
