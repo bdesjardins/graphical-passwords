@@ -27,7 +27,7 @@ class LoginController < ApplicationController
     unless user.nil?
       session[:username] = user unless user.nil?
       session[:approvals] = []
-      flash[:notice] = "Your OpenID URL is <b>#{base_url}user/#{user}</b><br/><br/>Proceed to step 2 below."
+      flash[:notice] = "Your OpenID URL is <b>#{base_url}user/#{user}</b>"
     else
       flash[:error] = "Sorry, couldn't log you in. Try again."
     end
