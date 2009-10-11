@@ -4,48 +4,236 @@
 
 <div id="login-form">
   <form method="get" action="<%= url_for :controller => 'login', :action => 'submit' %>">
-Type a username: 
+Username: 
   <input type="text" name="username" />
   <input type="submit" value="Log In" />
   </form>
 
 </div>
 
+
+
+
+	   <br>
+    
+<label>Password:<input type="text" id="data" value=""/></label>
+	   <br>
+	   <br>
+	
+	
+
+
+<div class="noprint">
+    
+<span  onclick="setDrawingOperation(event)">
+    
+    <!--
+    <label>Site:<input id="functionSite" type="radio" name="group1" value="functionSite" checked="true"/></label>
+    <label>Point:<input id="functionPoint" type="radio" name="group1" value="functionPoint"/></label>
+    <label>Line:<input id="functionLine" type="radio" name="group1" value="functionLine"/></label>
+    <label>Arc:<input id="functionArc" type="radio" name="group1" value="functionArc"/></label>
+    <label>Text:<input id="functionText" type="radio" name="group1" value="functionText"/></label>
+    <label>Move:<input id="functionMove" type="radio" name="group1" value="functionMove"/></label>
+    <label>Delete:<input id="functionDelete" type="radio" name="group1" value="functionDelete"/></label>
+    <label>Horizontal:<input id="functionHorizontal" type="radio" name="group1" value="functionHorizontal"/></label>
+    <label>Vertical:<input id="functionVertical" type="radio" name="group1" value="functionVertical"/></label>
+    <label>Length:<input id="functionLength" type="radio" name="group1" value="functionLength"/></label>
+    
+-->
+    <label>Site:<input id="functionSite" type="radio" name="group1" value="functionSite" checked="true"/></label>
+    <label>Line:<input id="functionLine" type="radio" name="group1" value="functionLine"/></label>
+    <label>Move:<input id="functionMove" type="radio" name="group1" value="functionMove"/></label>
+    <label>Delete:<input id="functionDelete" type="radio" name="group1" value="functionDelete"/></label>
+
+
+</span>
+
+
+<br>
+</div>
+	
+<canvas id="canvas1" onmousedown="controlMouseDown(event)" onmousemove="controlMouseMove(event)" onmouseup="controlMouseUp(event)">
+</canvas>
+
+<br>
+<br>
+
+
+
+<div class="noprint">
+<label>Image Location:<input type="text" id="imageLocation" value="images/QE.gif"/></label>
+<input type="button" onclick="loadBackgroundImage(event)" value="Import"/>
+<br>
+<br>
+</div>
+
+<div class="noprint">
+	<div id="trace"></div>
+</div>
+
+
+<div class="noprint">
+<b>Known Issues:</b><br>
+format so other people can create graphical passwords
+
+rotate map and find route
+upload photos
+where's wally/fred
+put room how you like
+choose animals in certain order
+redneck
+mix colours
+
+http://code.google.com/p/graphical-passwords/
+</div>
+
+
+
+
+
+
+	
+<script type="text/javascript" src="javascripts/jquery-1.3.2.js"></script>
+
+<script type="text/javascript" src="javascripts/trace.js"></script>
+
+<script type="text/javascript" src="javascripts/dataStructure.js"></script>
+<script type="text/javascript" src="javascripts/orienteering.js"></script>
+
+<script type="text/javascript" src="javascripts/control.js"></script>
+	
+<script type="text/javascript" src="javascripts/canvas.js"></script>
+
+
+<script type="text/javascript">
+
+
+	
+function exportAsPNG(event)
+{
+    var element = document.getElementById('canvas1');
+    var strData = element.toDataURL("image/png");
+	window.open(strData);
+}
+
+function loadData(event)
+{
+    deleteAll();
+    decodeData($('#data').val());
+    reset();
+    
+    markAllPointsAsNeedingRender();
+    render();
+}
+
+
+function zoomAndPrint(event)
+{
+    zoomIn();
+    window.print();
+}
+
+        
+function zoomIn(event)
+{
+        $('#canvas1').height(HEIGHT);
+        $('#canvas1').width(WIDTH);
+}        
+function zoomOut(event)
+{
+        var fraction = 300 / HEIGHT;
+        $('#canvas1').height(300);
+        $('#canvas1').width(fraction * WIDTH);
+}
+
+
+function loadBackgroundImage(event)
+{
+    var v = $('#imageLocation').val();  
+    
+    var img = new Image();  
+    img.onload = function()
+    {  
+		canvasSetSize(img.width, img.height)
+		
+		canvasSetBackgroundImage(img);
+		
+        zoomOut();
+		
+        markAllPointsAsNeedingRender();
+        render();
+    }  
+    img.src = v;
+	
+	trace("loadBackgroundImage from "+v);
+    
+}
+
+// function setLineScale(event)
+// {
+//      
+//     var v = parseFloat($('#lineScale').val()); 
+//     
+//         markAllPointsAsNeedingRender();
+//         POINTRADIUS = 30 * v;
+//         LINEWIDTH = 6 * v;
+//         render();
+//         
+//  trace("setLineScale to "+v);
+//     
+// }
+
+
+function setDrawingOperation(event)
+{
+    var value = $('input[name=group1]:checked').val() 
+    
+    setFunction(value);
+}
+
+
+	function main(event) {
+				
+				
+				
+		if (controlInitialise())
+		{
+				
+			        trace("finished controlInitialise");
+			if (canvasInitialise())
+			{
+			        trace("finished canvasInitialise");
+			
+			        setTargetForRender(C2D)
+                    setDataCallback(function(s)
+                    {
+                        $('#data').val(s)
+                    })
+                    setResetCallback(function()
+                    {
+		                calculateSiteIndexes()
+                    })
+                    
+			        loadBackgroundImage();
+			       // setLineScale();
+			        setDrawingOperation();
+			        loadData();
+			        
+			        //relaxC();
+			        
+			        
+    				$('#error').hide();
+    				
+			}
+		}
+		
+	}
+
+main();
+
+
+</script>
+
 <% end %>
-
-<p> Welcome to the Ruby OpenID example.  This code is a starting point
-for developers wishing to implement an OpenID provider or relying
-party.  We've used the <a href="http://rubyonrails.org/">Rails</a>
-platform to demonstrate, but the library code is not Rails specific.</p>
-
-<h2>To use the example provider</h2>
-<p>
-  <ol>
-
-    <li>Enter a username in the form above.  You will be "Logged In"
-    to the server, at which point you may authenticate using an OpenID
-    consumer. Your OpenID URL will be displayed after you log
-    in.<p>The server will automatically create an identity page for
-    you at <%= @base_url %>user/<i>name</i></p></li>
-
-    <li><p>Because WEBrick can only handle one thing at a time, you'll need to
-    run another instance of the example on another port if you want to use
-    a relying party to use with this example provider:</p>
-    <blockquote>
-    <code>script/server --port=3001</code>
-    </blockquote>
-
-    <p>(The RP needs to be able to access the provider, so unless you're
-    running this example on a public IP, you can't use the live example
-    at <a href="http://openidenabled.com/">openidenabled.com</a> on
-    your local provider.)</p>
-    </li>
-
-    <li>Point your browser to this new instance and follow the directions
-    below.</li>
-    <!-- Fun fact: 'url_for :port => 3001' doesn't work very well. -->
-  </ol>
-
-</p>
 
 
