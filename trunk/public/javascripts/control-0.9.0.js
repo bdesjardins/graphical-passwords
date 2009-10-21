@@ -44,7 +44,12 @@ var DELTAX, DELTAY
 		var width = $('#canvas1').width();
 		
 		//x, y relative to canvas
-		var xFraction = (e.offsetX)/width, yFraction = (e.offsetY)/height //border width = 2
+		
+		var offset = jQuery($('#canvas1')).offset(); 
+		var relativeX = e.clientX - offset.left, relativeY = e.clientY - offset.top;
+		
+		var xFraction = (relativeX)/width, yFraction = (relativeY)/height //border width = 2
+		
 		var newX = canvasXCoordinateForFraction(xFraction), newY = canvasYCoordinateForFraction(yFraction)
 		
 		if (CURRENTX != undefined)
