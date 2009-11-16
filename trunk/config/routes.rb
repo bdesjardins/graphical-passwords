@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
@@ -35,17 +36,13 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
+  map.resources :users
 
-  map.connect '', :controller => 'login'
+  map.connect 'session/:action', :controller => 'session'
   map.connect 'server/xrds', :controller => 'server', :action => 'idp_xrds'
-  map.connect 'user/:username', :controller => 'server', :action => 'user_page'
-  map.connect 'user/:username/xrds', :controller => 'server', :action => 'user_xrds'
+  map.openid 'openid/:username', :controller => 'server', :action => 'user_page'
+  map.connect 'openid/:username/xrds', :controller => 'server', :action => 'user_xrds'
   
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
   
   
   

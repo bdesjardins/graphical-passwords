@@ -1,8 +1,8 @@
 <html>
-  <head><title>OpenID Server Example</title></head>
+  <head><title>Graphical Passwords OpenID Server</title></head>
   <style type="text/css">
       * {
-        font-family: verdana,sans-serif;
+        font-family: sans-serif;
       }
       body {
         width: 50em;
@@ -23,7 +23,7 @@
         border: 1px solid #ff0000;
         background: #ffaaaa;
       }
-      #login-form {
+      #create-form {
         border: 1px solid #777777;
         background: #dddddd;
         margin-top: 1em;
@@ -34,20 +34,21 @@
       }
       li {margin-bottom: .5em;}
       span.openid:before {
-        content: url(<%= @base_url %>images/openid_login_bg.gif) ;
+        content: url(/images/openid_login_bg.gif) ;
       }
       span.openid {
         font-size: smaller;
       }
   </style>
+  <%= stylesheet_link_tag 'graphicalPasswords' %>
   <body>
 
 
 
     <% if session[:username] %>
-      <div style="float:right;">
-        Welcome, <%= session[:username] %> | <%= link_to('Log out', :controller => 'login', :action => 'logout') %><br />
-	<span class="openid"><%= @base_url %>user/<%= session[:username] %></span>
+      <div>
+        Logged in as <%= session[:username] %> | <%= link_to('Log out', :controller => 'session', :action => 'logout') %><br />
+	<span class="openid"><%= openid_url(session[:username]) %></span>
       </div>
     <% end %>
 

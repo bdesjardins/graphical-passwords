@@ -59,8 +59,8 @@ function canvasSetBackgroundImage(i) {
 		}
 }
 
-function canvasInitialise() {
-		C2D = document.getElementById('canvas1').getContext('2d')
+function canvasInitialise(c) {
+		C2D = document.getElementById(c).getContext('2d')
 		if (C2D) {
 			C2D.globalAlpha = 1
 			C2D.globalCompositeOperation = 'source-over'
