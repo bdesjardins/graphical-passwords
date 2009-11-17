@@ -155,8 +155,6 @@ function loadBackgroundImage(event)
 				var $ele = $(eleAlignTo);
 				var eleOffset = $ele.offset();
 				
-				eleOffset.top += $ele.height();
-				
 				$('body')
 					.append(
 						$('<div></div>')

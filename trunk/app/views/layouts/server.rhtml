@@ -1,57 +1,101 @@
-<html>
-  <head><title>Graphical Passwords OpenID Server</title></head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>Graphical Passwords OpenID Server</title>
+	<style type="text/css">
+		body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
+		div.dialog {
+			width: 35em;
+			padding: 4em 4em;
+			margin: 1em auto 0 auto;
+			border: 1px solid #ccc;
+			border-right-color: #999;
+			border-bottom-color: #999;
+			text-align: left; 
+		}
+		h1 {
+		    font-size: 200%; color: #00f;
+		}
+		h2 {
+		    font-size: 150%;
+		}
+		h3 {
+		    font-size: 100%; color: #888; font-style: italic;
+		}
+		p { 
+			padding: 0em 0em 1.5em 0em;
+		}
+		#create-form {
+			padding: 0em 0em 0em 3em;
+	    }
+		label { 
+		    font-size: 150%;
+			padding: 0em .5em 0em 0em;
+		}
+		input.textfield { 
+		    font-size: 150%; font-family: arial, sans-serif; width: 10em;
+		}
+		input.button { 
+		    font-size: 150%; font-family: arial, sans-serif; 
+		}
+		.left_float {
+		    display: block;
+		    float: left;
+			padding: 0em 1em 0em 1em;
+	    }
+		.right_float {
+		    display: block;
+		    float: right;
+			padding: 0em 1em 0em 1em;
+	    }
+	</style>
+	
+	
   <style type="text/css">
-      * {
-        font-family: sans-serif;
-      }
-      body {
-        width: 50em;
-        margin: 1em;
-      }
-      div {
-        padding: .5em;
-      }
-      table {
-        margin: none;
-        padding: none;
-      }
+      
       .notice {
         border: 1px solid #60964f;
         background: #b3dca7;
+		padding: 1em;
+        font-size: 150%;
       }
       .error {
         border: 1px solid #ff0000;
         background: #ffaaaa;
+		padding: 1em;
+        font-size: 150%;
       }
-      #create-form {
-        border: 1px solid #777777;
-        background: #dddddd;
-        margin-top: 1em;
-        padding-bottom: 0em;
-      }
-      table {
-        padding: 1em;
-      }
-      li {margin-bottom: .5em;}
+      
+      
       span.openid:before {
         content: url(/images/openid_login_bg.gif) ;
       }
       span.openid {
-        font-size: smaller;
       }
+      
   </style>
+  
   <%= stylesheet_link_tag 'graphicalPasswords' %>
-  <body>
+  
+</head>
 
-
+<body>
+    
 
     <% if session[:username] %>
       <div>
-        Logged in as <%= session[:username] %> | <%= link_to('Log out', :controller => 'session', :action => 'logout') %><br />
-	<span class="openid"><%= openid_url(session[:username]) %></span>
+        Logged in as <span class="openid"><%= openid_url(session[:username]) %></span> | <%= link_to('Log out', :controller => 'session', :action => 'logout') %>
+	
       </div>
     <% end %>
 
+
+  <div class="dialog">
+    
 
     <% if flash[:notice] or flash[:error] %>
      <div class="<%= flash[:notice].nil? ? 'error' : 'notice' %>">
@@ -61,6 +105,9 @@
 
     <%= @content_for_layout %>
 
-
-  </body>
+  </div>
+</body>
 </html>
+
+
+

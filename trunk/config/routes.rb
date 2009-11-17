@@ -39,9 +39,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users
 
   map.connect 'session/:action', :controller => 'session'
+  
   map.connect 'server/xrds', :controller => 'server', :action => 'idp_xrds'
-  map.openid 'openid/:username', :controller => 'server', :action => 'user_page'
-  map.connect 'openid/:username/xrds', :controller => 'server', :action => 'user_xrds'
+  map.connect 'server/:action', :controller => 'server'
+  
+  map.openid 'u/:username', :controller => 'server', :action => 'user_page'
+  map.connect 'u/:username/xrds', :controller => 'server', :action => 'user_xrds'
   
   
   

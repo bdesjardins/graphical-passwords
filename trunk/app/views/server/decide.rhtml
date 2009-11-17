@@ -1,5 +1,8 @@
-<form method="post" action="<%= url_for :controller => 'server', :action => 'decision' %>">
 
+
+
+    <% form_for :server, :url => { :action => "decision" } do |f| %>
+    
 <table>
   <tr><td>Site:</td><td><%= @oidreq.trust_root %></td></tr>
 
@@ -23,4 +26,4 @@
 <input type="submit" name="yes" value="yes" />
 <input type="submit" name="no" value="no" />
 
-</form>
+    <% end %>

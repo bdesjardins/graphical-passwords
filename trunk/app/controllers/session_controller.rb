@@ -12,6 +12,21 @@ class SessionController < ApplicationController
                                                   :only_path => false)
   end
 
+
+  def create
+    
+    user = User.new(params[:user])
+    
+    if user.save
+      flash[:notice] = "Success! Your OpenID is:<br><a href='"<< openid_url(user.username) <<"'>"<< openid_url(user.username) <<"</a><br><br>Now login to an OpenID enabled site such as <a href='http://www.livejournal.com/openid/'>http://www.livejournal.com/openid/</a>"
+    else
+      flash[:error] = "Sorry, couldn't create user. Try again."
+    end
+      
+    redirect_to :action => 'index'
+  end
+  
+  
   def login
     
     user = User.authenticate_safely(params[:user])
