@@ -14,6 +14,8 @@ require 'openid/store/filesystem'
 
 class ServerController < ApplicationController
 
+  protect_from_forgery :except => :index
+  
   include ServerHelper
   include OpenID::Server
   layout nil
@@ -102,7 +104,7 @@ class ServerController < ApplicationController
     end
 
     # content negotiation failed, so just render the user page
-    xrds_url = url_for(:controller=>'user',:action=>params[:username])+'/xrds'
+    xrds_url = openid_url(params[:username])+'/xrds'
     identity_page = <<EOS
 <html><head>
 <meta http-equiv="X-XRDS-Location" content="#{xrds_url}" />

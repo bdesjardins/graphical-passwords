@@ -2,7 +2,7 @@
 module ServerHelper
 
   def url_for_user
-    url_for :controller => 'user', :action => session[:username]
+    openid_url(session[:username])
   end
 
 end

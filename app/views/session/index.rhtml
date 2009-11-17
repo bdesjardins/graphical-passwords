@@ -1,19 +1,15 @@
 
-
-<% if session[:username].nil? %>
-<% end %>
+<h2>Enter a username and a password below to create a new OpenID</h2>
 
 <div id="create-form">
     
-    <% form_for :user, @user, :url => { :action => "login" } do |f| %>
-    <%= f.label :username, 'Username' %>:
-      <%= f.text_field :username %>
-      
-    <%= f.label :password, 'Password' %>:
-      <%= f.text_field :password %>
+    <% form_for :user, @user, :url => { :action => "create" } do |f| %>
+    <%= f.label :username, 'Username' %> <%= f.text_field :username, :class => "textfield" %><br>
+      <br>
+    <%= f.label :password, 'Password' %> <%= f.text_field :password, :class => "textfield" %><br>
       <br>
       
-      <%= submit_tag 'Login' %>
+      <%= submit_tag 'Create', :class => "button" %>
     <% end %>
     
     
@@ -21,10 +17,31 @@
 </div>
 
 
+
+
 <br>
 <br>
 
+<br>
+<br>
 
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
 
 
 
@@ -32,12 +49,16 @@
 
 <b>Known Issues:</b><br>
 
-login when there is no session on decision<br>
+login when there is no session on decision issue<br>
 consistent transform<br>
 reset graphic password<br>
 create account, user account page, users parameter validation<br>
 production database<br>
 user should be asked for permission to release profile info<br>
+
+<br>
+
+beta program<br>
 
 <br>
 
