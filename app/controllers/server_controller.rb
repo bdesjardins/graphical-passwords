@@ -46,7 +46,7 @@ class ServerController < ApplicationController
           oidresp = oidreq.answer(false)
         elsif session[:username].nil?
           # The user hasn't logged in.
-          show_decision_page(oidreq)
+          show_decision_page(oidreq, nil)
           return
         else
           # Else, set the identity to the one the user is using.
@@ -69,7 +69,7 @@ class ServerController < ApplicationController
         oidresp = oidreq.answer(false, server_url)
 
       else
-        show_decision_page(oidreq)
+        show_decision_page(oidreq, nil)
         return
       end
 
@@ -80,7 +80,7 @@ class ServerController < ApplicationController
     self.render_response(oidresp)
   end
 
-  def show_decision_page(oidreq, message="Do you trust this site with your identity?")
+  def show_decision_page(oidreq, message)
     session[:last_oidreq] = oidreq
     @oidreq = oidreq
 
@@ -139,15 +139,24 @@ EOS
 
   def decision
     oidreq = session[:last_oidreq]
+    identity = oidreq.identity
+      
+    if User.authenticate_safely(:username => identity.split('/').last,
+                      :password => Digest::MD5.hexdigest(params[:password])).nil?
+        msg = "Incorrect Password. Please try again."
+        show_decision_page(oidreq, msg)
+        return
+      end
+      
     session[:last_oidreq] = nil
-
+      
+      
     if params[:yes].nil?
       redirect_to oidreq.cancel_url
       return
     else
       id_to_send = params[:id_to_send]
 
-      identity = oidreq.identity
       if oidreq.id_select
         if id_to_send and id_to_send != ""
           session[:username] = id_to_send

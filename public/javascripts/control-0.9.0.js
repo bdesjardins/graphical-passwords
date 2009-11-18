@@ -52,6 +52,9 @@ var DELTAX, DELTAY
 		
 		var newX = canvasXCoordinateForFraction(xFraction), newY = canvasYCoordinateForFraction(yFraction)
 		
+		newX = Math.round(newX/100)*100;
+		newY = Math.round(newY/100)*100;
+		
 		if (CURRENTX != undefined)
 			DELTAX = newX - CURRENTX
 		if (CURRENTY != undefined)
