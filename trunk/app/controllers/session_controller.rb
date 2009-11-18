@@ -15,7 +15,10 @@ class SessionController < ApplicationController
 
   def create
     
-    user = User.new(params[:user])
+    logger.info(params[:user])
+    
+    user = User.new(:username => params[:user][:username],
+                      :password => Digest::MD5.hexdigest(params[:user][:password]))
     
     if user.save
       flash[:notice] = "Success! Your OpenID is:<br><a href='"<< openid_url(user.username) <<"'>"<< openid_url(user.username) <<"</a><br><br>Now login to an OpenID enabled site such as <a href='http://www.livejournal.com/openid/'>http://www.livejournal.com/openid/</a>"
@@ -29,7 +32,8 @@ class SessionController < ApplicationController
   
   def login
     
-    user = User.authenticate_safely(params[:user])
+    user = User.authenticate_safely(:user => params[:user][:username],
+                      :password => Digest::MD5.hexdigest(params[:user][:password]))
 
     if user
       session[:username] = user.username
