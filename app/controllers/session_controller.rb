@@ -15,8 +15,6 @@ class SessionController < ApplicationController
 
   def create
     
-    logger.info(params[:user])
-    
     user = User.new(:username => params[:user][:username],
                       :password => Digest::MD5.hexdigest(params[:user][:password]),
 					:email => params[:user][:email],
