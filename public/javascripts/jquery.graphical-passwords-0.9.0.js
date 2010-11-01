@@ -8,6 +8,8 @@
  **/
 
 
+//this code is derived from http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/index.html
+
        
 function zoomOut(event)
 {
@@ -17,7 +19,20 @@ function zoomOut(event)
 }
 
 
-function loadBackgroundImage(event)
+
+function loadData(d)
+{
+	deleteAll();
+    decodeData(d);
+    reset();
+ 
+    markAllPointsAsNeedingRender();
+    render();
+	
+	trace("loadData "+d);
+}
+
+function loadBackgroundImage()
 {
     var v = "/images/QE.gif";  
     
@@ -85,41 +100,24 @@ function loadBackgroundImage(event)
 							
 					}
 					
-					$this.dpDisplay(this);
 				}
 			)
 		},
 
 
-		dpDisplay : function(e)
+		dpDisplay : function(e, passwordData)
 		{
-			return _w.call(this, 'display', e);
+			return _w.call(this, 'display', e, passwordData);
 		},
-
-		dpGetSelected : function()
+		
+		dpClose : function()
 		{
-			var c = _getController(this[0]);
-			if (c) {
-				return c.getSelected();
-			}
-			return null;
-		},
+			return _w.call(this, '_closeCalendar', false, this[0]);
+		}
 
 	});
 
 	
-	var _w = function(f, a1, a2, a3, a4)
-	{
-		return this.each(
-			function()
-			{
-				var c = _getController(this);
-				if (c) {
-					c[f](a1, a2, a3, a4);
-				}
-			}
-		);
-	};
 	
 	function GraphicalPassword(ele)
 	{
@@ -142,13 +140,32 @@ function loadBackgroundImage(event)
 				this.horizontalPosition = s.horizontalPosition;
 				this.settings = s;
 			},
+			
 			setPassword :  function(p)
 			{
 				$e = $(this.ele);
 				$e.trigger('choiceMade', [p]);
 			},
-			display : function(eleAlignTo)
+			
+			
+			_closeCalendar : function(programatic, ele)
 			{
+				if (!ele || ele == this.ele)
+				{
+					$('#dp-popup').empty().remove();
+					if (!programatic) {
+						$(this.ele).trigger('dpClosed', this);
+					}
+					
+					C2D = null;
+				}
+			},
+			
+			display : function(eleAlignTo, passwordData)
+			{
+				//only open one at once
+				if (C2D) return;
+				
 				
 				eleAlignTo = eleAlignTo || this.ele;
 				var c = this;
@@ -167,12 +184,25 @@ function loadBackgroundImage(event)
 								'left'	:	eleOffset.left + c.horizontalOffset
 							})
 							.append(
+								$('<a href="#" class="dp-close" title="Close">Close</a>')
+								.bind(
+									'click',
+									function()
+									{
+										c._closeCalendar(false);
+										return false;
+									})
+							)
+							.append(
 								$('<canvas id="canvas1" onmousedown="controlMouseDown(event)" onmousemove="controlMouseMove(event)" onmouseup="controlMouseUp(event)"></canvas>')
 							)
 							.bgIframe()
 						);
 						
 
+						
+						
+						
 //old graphics code
 		if (controlInitialise())
 		{
@@ -193,7 +223,10 @@ function loadBackgroundImage(event)
 		        loadBackgroundImage();
 				setFunction("functionSite");
     				
+			    loadData(passwordData);
+
 			}
+			
 		}			
 						
 						
@@ -211,7 +244,8 @@ function loadBackgroundImage(event)
 				}
 				
 				
-			}
+			},
+			
 		}
 	);
 	
@@ -233,6 +267,20 @@ function loadBackgroundImage(event)
 		horizontalOffset	: 0,
 	};
 
+
+	var _w = function(f, a1, a2, a3, a4)
+	{
+		return this.each(
+			function()
+			{
+				var c = _getController(this);
+				if (c) {
+					c[f](a1, a2, a3, a4);
+				}
+			}
+		);
+	};
+	
 	function _getController(ele)
 	{
 		if (ele._dpId) return $.event._dpCache[ele._dpId];

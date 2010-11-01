@@ -4,35 +4,23 @@
 
     
     <% form_for :user, @user, :url => { :action => "create" } do |f| %>
+    <p class="instructions">
+When you login to a relying party, you must enter your full OpenID. For example, a username <i>zoltan</i>, will have an OpenID <i>openid.foley-fisher.com/u/zoltan</i>.</p>
     <%= f.label :username, 'Username' %> <%= f.text_field :username, :class => "textfield" %><br>
-      <br>
+    <p class="instructions">
+Click on a number of points on the image to specify a password. When you confirm your password for a relying party, the order of the points must be the same. We cannot recover your password, but you can create a new password if you forget it.</p>
     <%= f.label :password, 'Password' %> <%= f.text_field :password, :class => "textfield" %><br>
       <br>
-      
+    <p class="instructions">
+Enter the following information for relying parties and password recovery.</p>
+    <%= f.label :email, 'Email' %> <%= f.text_field :email, :class => "textfield" %><br>
+      <br>
+    <%= f.label :fullname, 'Full Name' %> <%= f.text_field :fullname, :class => "textfield" %><br>
+      <br>
       <%= submit_tag 'Create', :class => "button" %>
     <% end %>
     
     
-
-
-
-<br>
-<br>
-
-<br>
-<br>
-
-<br>
-<br>
-
-<br>
-<br>
-
-<br>
-<br>
-
-<br>
-<br>
 
 <br>
 <br>
@@ -46,10 +34,14 @@
 
 <b>Known Issues:</b><br>
 
-login when there is no session on decision issue<br>
-consistent transform<br>
-reset graphic password<br>
+reset password<br>
+numbers beside points<br>
+maximum users check<br>
 create account, user account page, users parameter validation<br>
+reopening/closing password changes password<br>
+restart entering passwod<br>
+IE compatibility<br>
+Firefox offset issue<br>
 production database<br>
 user should be asked for permission to release profile info<br>
 
@@ -68,7 +60,9 @@ put room how you like<br>
 choose animals in certain order<br>
 redneck<br>
 mix colours<br>
-
+http://openidexplained.com/<br>
+http://openiddirectory.com/<br>
+http://www.iconbuffet.com/<br>
 </div>
 
 
@@ -93,7 +87,18 @@ mix colours<br>
 <script type="text/javascript">
 
 $(document).ready(function() {
-    $('#user_password').graphicalPassword();
+    $('#user_password')
+        .graphicalPassword()
+    	.bind(
+    		'focus',
+    		function()
+    		{
+    			$(this).dpDisplay($(this), $(this).val());
+    		}
+    	);
+    
+    $('#user_password').dpDisplay($('#user_password'), $('#user_password').val());
+  
  });
  
 

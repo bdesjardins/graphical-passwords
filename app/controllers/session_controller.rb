@@ -18,12 +18,14 @@ class SessionController < ApplicationController
     logger.info(params[:user])
     
     user = User.new(:username => params[:user][:username],
-                      :password => Digest::MD5.hexdigest(params[:user][:password]))
+                      :password => Digest::MD5.hexdigest(params[:user][:password]),
+					:email => params[:user][:email],
+					:fullname => params[:user][:fullname])
     
     if user.save
-      flash[:notice] = "Success! Your OpenID is:<br><a href='"<< openid_url(user.username) <<"'>"<< openid_url(user.username) <<"</a><br><br>Now login to an OpenID enabled site such as <a href='http://www.livejournal.com/openid/'>http://www.livejournal.com/openid/</a>"
+      flash[:notice] = "Success! Your OpenID is:<br><a href='"<< openid_url(user.username) <<"'>"<< openid_url(user.username) <<"</a><br><br>Now login to an OpenID enabled site such as <a href='http://www.livejournal.com/openid/'>http://www.livejournal.com/openid/</a>!"
     else
-      flash[:error] = "Sorry, couldn't create user. Try again."
+      flash[:error] = "Sorry, couldn't create user. Please try again."
     end
       
     redirect_to :action => 'index'
@@ -39,7 +41,7 @@ class SessionController < ApplicationController
       session[:username] = user.username
       session[:approvals] = []
     else
-      flash[:error] = "Sorry, couldn't log in. Try again."
+      flash[:error] = "Sorry, couldn't log in. Please try again."
     end
     
     redirect_to :action => 'index'

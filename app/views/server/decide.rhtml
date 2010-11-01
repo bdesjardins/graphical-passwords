@@ -56,7 +56,17 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    $('#user_password').graphicalPassword();
+    $('#user_password')
+        .graphicalPassword()
+    	.bind(
+    		'focus',
+    		function()
+    		{
+    			$(this).dpDisplay($(this), $(this).val());
+    		}
+    	);
+    
+    $('#user_password').dpDisplay($('#user_password'), $('#user_password').val());
  });
  
 
