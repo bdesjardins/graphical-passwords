@@ -1,8 +1,12 @@
 class User < ActiveRecord::Base
   
   def self.authenticate_safely(user)
-    find(:first, :conditions => { :username => user[:username], :password => user[:password] })
+    @cache = find(:first, :conditions => { :username => user[:username], :password => user[:password] })
+	@cache
   end
     
-    
+	def self.authenticated()
+		@cache
+	end
+	
 end
