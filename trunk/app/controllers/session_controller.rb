@@ -21,7 +21,7 @@ class SessionController < ApplicationController
 					:fullname => params[:user][:fullname])
     
     if user.save
-      flash[:notice] = "Success! Your OpenID is:<br><a href='"<< openid_url(user.username) <<"'>"<< openid_url(user.username) <<"</a><br><br>Now login to an OpenID enabled site such as <a href='http://www.livejournal.com/openid/'>http://www.livejournal.com/openid/</a>!"
+      flash[:notice] = "Success! Your OpenID is:<br><a href='"<< openid_url(user.username) <<"'>"<< openid_url(user.username) <<"</a><br><br>Now login to an OpenID relying party such as <a href='http://www.livejournal.com/openid/'>http://www.livejournal.com/openid/</a>!"
     else
       flash[:error] = "Sorry, couldn't create user. Please try again."
     end

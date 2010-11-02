@@ -19,10 +19,21 @@ function zoomOut(event)
 }
 
 
+function clearData()
+{
+	deleteAll();
+	NEXTID = 0;
+	
+    reset();
+	
+	trace("clearData");
+}
 
 function loadData(d)
 {
 	deleteAll();
+	NEXTID = 0;
+	
     decodeData(d);
     reset();
  
@@ -148,7 +159,7 @@ function loadBackgroundImage()
 			},
 			
 			
-			_closeCalendar : function(programatic, ele)
+			closePassword : function(programatic, ele)
 			{
 				if (!ele || ele == this.ele)
 				{
@@ -158,6 +169,15 @@ function loadBackgroundImage()
 					}
 					
 					C2D = null;
+				}
+			},
+			
+			
+			clearPassword : function(programatic, ele)
+			{
+				if (!ele || ele == this.ele)
+				{
+					clearData();
 				}
 			},
 			
@@ -189,12 +209,22 @@ function loadBackgroundImage()
 									'click',
 									function()
 									{
-										c._closeCalendar(false);
+										c.closePassword(false);
 										return false;
 									})
 							)
 							.append(
-								$('<canvas id="canvas1" onmousedown="controlMouseDown(event)" onmousemove="controlMouseMove(event)" onmouseup="controlMouseUp(event)"></canvas>')
+								$('<a href="#" class="dp-reset" title="Clear">Clear</a>')
+								.bind(
+									'click',
+									function()
+									{
+										c.resetPassword(false);
+										return false;
+									})
+							)
+							.append(
+								$('<br><canvas id="canvas1" onmousedown="controlMouseDown(event)" onmousemove="controlMouseMove(event)" onmouseup="controlMouseUp(event)"></canvas>')
 							)
 							.bgIframe()
 						);
@@ -210,19 +240,19 @@ function loadBackgroundImage()
 			if (canvasInitialise('canvas1'))
 			{
 			
-		        setTargetForRender(C2D)
-                   setDataCallback(function(s)
-                   {
+				setTargetForRender(C2D);
+				setDataCallback(function(s)
+				{
 					c.setPassword(s);
-                   })
-                   setResetCallback(function()
-                   {
-	                calculateSiteIndexes()
-                   })
-                   
-		        loadBackgroundImage();
+				})
+				setResetCallback(function()
+				{
+					calculateSiteIndexes();
+				})
+
+				loadBackgroundImage();
 				setFunction("functionSite");
-    				
+
 			    loadData(passwordData);
 
 			}

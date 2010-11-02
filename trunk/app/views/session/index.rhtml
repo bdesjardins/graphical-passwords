@@ -5,10 +5,10 @@
     
     <% form_for :user, @user, :url => { :action => "create" } do |f| %>
     <p class="instructions">
-When you login to a relying party, you must enter your full OpenID. For example, a username <i>zoltan</i>, will have an OpenID <i>openid.foley-fisher.com/u/zoltan</i>.</p>
+When you login to a relying party, you must enter your full OpenID. For example, a username <i>zoltan</i> will have an OpenID <i>openid.foley-fisher.com/u/zoltan</i>.</p>
     <%= f.label :username, 'Username' %> <%= f.text_field :username, :class => "textfield" %><br>
     <p class="instructions">
-Click on a number of points on the image to specify a password. When you confirm your password for a relying party, the order of the points must be the same. We cannot recover your password, but you can create a new password if you forget it.</p>
+Click on a number of points on the image to specify a password. When you repeat your password for a relying party, the order of the points must be the same. We cannot recover your password, but you can create a new password if you forget it.</p>
     <%= f.label :password, 'Password' %> <%= f.text_field :password, :class => "textfield" %><br>
       <br>
     <p class="instructions">
@@ -34,16 +34,15 @@ Enter the following information for relying parties and password recovery.</p>
 
 <b>Known Issues:</b><br>
 
-reset password<br>
+send email before reset password, change details etc.<br>
 numbers beside points<br>
 maximum users check<br>
 create account, user account page, users parameter validation<br>
-reopening/closing password changes password<br>
-restart entering passwod<br>
 IE compatibility<br>
 Firefox offset issue<br>
 production database<br>
 user should be asked for permission to release profile info<br>
+"incorrect password" on no trust<br>
 
 <br>
 

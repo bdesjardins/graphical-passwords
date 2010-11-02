@@ -44,7 +44,7 @@ class ServerController < ApplicationController
       if oidreq.id_select
         if oidreq.immediate
           oidresp = oidreq.answer(false)
-        elsif session[:username].nil?
+        elsif session[:user].nil?
           # The user hasn't logged in.
           show_decision_page(oidreq, nil)
           return
@@ -138,9 +138,17 @@ EOS
   end
 
   def decision
+	
     oidreq = session[:last_oidreq]
+	
+    if params[:yes].nil?
+      redirect_to oidreq.cancel_url
+      return
+    end
+
     identity = oidreq.identity
-      
+
+
     if User.authenticate_safely(:username => identity.split('/').last,
                       :password => Digest::MD5.hexdigest(params[:password])).nil?
         msg = "Incorrect Password. Please try again."
@@ -150,16 +158,12 @@ EOS
       
     session[:last_oidreq] = nil
       
-      
-    if params[:yes].nil?
-      redirect_to oidreq.cancel_url
-      return
-    else
       id_to_send = params[:id_to_send]
+		
+		session[:user] = User.authenticated
 
       if oidreq.id_select
         if id_to_send and id_to_send != ""
-          session[:username] = id_to_send
           session[:approvals] = []
           identity = url_for_user
         else
@@ -175,12 +179,14 @@ EOS
       else
         session[:approvals] = [oidreq.trust_root]
       end
+
       oidresp = oidreq.answer(true, nil, identity)
       add_sreg(oidreq, oidresp)
       add_pape(oidreq, oidresp)
       return self.render_response(oidresp)
+
     end
-  end
+
 
   protected
 
@@ -200,7 +206,7 @@ EOS
   end
 
   def is_authorized(identity_url, trust_root)
-    return (session[:username] and (identity_url == url_for_user) and self.approved(trust_root))
+    return (session[:user] and (identity_url == url_for_user) and self.approved(trust_root))
   end
 
   def render_xrds(types)
@@ -237,9 +243,9 @@ EOS
     # and the user should be asked for permission to release
     # it.
     sreg_data = {
-      'nickname' => session[:username],
-      'fullname' => 'Mayor McCheese',
-      'email' => 'mayor@example.com'
+      'nickname' => session[:user].username,
+      'fullname' => session[:user].fullname,
+      'email' => session[:user].email
     }
 
     sregresp = OpenID::SReg::Response.extract_response(sregreq, sreg_data)
