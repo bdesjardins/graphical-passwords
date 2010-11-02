@@ -123,7 +123,12 @@ function loadBackgroundImage()
 		
 		dpClose : function()
 		{
-			return _w.call(this, '_closeCalendar', false, this[0]);
+			return _w.call(this, 'closePassword', false, this[0]);
+		},
+		
+		dpClose : function()
+		{
+			return _w.call(this, 'clearPassword', false, this[0]);
 		}
 
 	});
@@ -219,7 +224,7 @@ function loadBackgroundImage()
 									'click',
 									function()
 									{
-										c.resetPassword(false);
+										c.clearPassword(false);
 										return false;
 									})
 							)
